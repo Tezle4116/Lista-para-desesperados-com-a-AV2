@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Revisão de Física – 1º ano</title>
+<style>
+:root{--bg:#f0ebf8;--card:#fff;--ink:#202124;--muted:#5f6368;--line:#dadce0;--acc:#673ab7;--ok:#137333;--okbg:#e6f4ea;--bad:#b3261e;--badbg:#fce8e6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1a26;--card:#2a2636;--ink:#e8e6ee;--muted:#a9a5b8;--line:#443f55;--acc:#b39ddb;--ok:#81c995;--okbg:#1c3326;--bad:#f28b82;--badbg:#3d2426}}
+:root[data-theme="dark"]{--bg:#1d1a26;--card:#2a2636;--ink:#e8e6ee;--muted:#a9a5b8;--line:#443f55;--acc:#b39ddb;--ok:#81c995;--okbg:#1c3326;--bad:#f28b82;--badbg:#3d2426}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:700px;margin:0 auto;padding:16px 12px 48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin-bottom:12px}
+.head{border-top:10px solid var(--acc)}
+.head h1{font-size:1.6rem;font-weight:400;margin:0 0 8px}
+.head p{margin:0;color:var(--muted)}
+.stat{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:.9rem}
+.stat b{color:var(--acc)}
+.tag{display:inline-block;font-size:.78rem;color:var(--muted);margin-bottom:6px}
+.q{margin:0 0 14px;font-size:1.02rem}
+.q span{color:var(--muted);margin-right:4px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:transparent;color:var(--ink);border:1.5px solid transparent;border-radius:8px;padding:9px 10px;margin-bottom:4px;font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){background:var(--bg)}
+.opt:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
+.opt:disabled{cursor:default}
+.dot{flex:none;width:20px;height:20px;margin-top:1px;border:2px solid var(--muted);border-radius:50%;display:grid;place-items:center}
+.opt.sel .dot{border-color:currentColor}
+.opt.sel .dot::after{content:"";width:10px;height:10px;border-radius:50%;background:currentColor}
+.txt{display:block}
+.why{display:block;margin-top:4px;font-size:.86rem;opacity:.95}
+.opt.ok{background:var(--okbg);color:var(--ok);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);color:var(--bad)}
+.opt.bad.sel{border-color:var(--bad)}
+.opt .txt{color:var(--ink)}
+.opt .why{color:inherit}
+button.act{font:500 .95rem system-ui,sans-serif;background:var(--acc);color:var(--card);border:0;border-radius:4px;padding:10px 22px;cursor:pointer}
+button.act:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+#fim{display:none}
+#fim .big{font-size:2rem;margin:4px 0}
+</style>
+</head>
+<body>
+<main>
+<div class="card head"><h1>Revisão de Física – 1º ano</h1><p>Revisão do 3º trimestre: hidrostática e cinemática (24 questões). Escolha uma alternativa em cada questão: ela é corrigida na hora e as outras mostram o porquê de estarem certas ou erradas.</p></div>
+<div class="card stat"><span id="prog"></span><span id="score"></span></div>
+<div id="qs"></div>
+<div class="card" id="fim"><div class="big" id="res"></div><p id="msg"></p></div>
+<button class="act" id="reset" type="button">Limpar respostas</button>
+</main>
+<script>
+const Q=[
+["TB2","Uma caixa repousa sobre um piso horizontal exercendo uma determinada pressão. Sabendo que a pressão é definida como P = F/A, analise o comportamento desta grandeza física e assinale a opção correta:",
+["Se a área de contato for dobrada sem alterar a força, a pressão exercida também dobrará.","Se a força aplicada for dobrada mantendo-se a área de contato constante, a pressão exercida também dobrará.","A pressão é diretamente proporcional à área e inversamente proporcional à força aplicada.","Reduzindo a área de contato à metade sem alterar a força, a pressão resultante diminui pela metade.","A unidade de medida de pressão no Sistema Internacional de Unidades é o Joule (J)."],1,
+["Dobrar a área com força constante reduz a pressão pela metade (P = F/A).","P é diretamente proporcional a F: dobrando F, P dobra.","É o contrário: P é inversamente proporcional à área e diretamente proporcional à força.","Reduzir a área à metade dobra a pressão, não a diminui.","A unidade de pressão no SI é o pascal (Pa = N/m²). Joule é unidade de energia."]],
+["TB3","Determine a pressão hidrostática (devida exclusivamente ao líquido) exercida no fundo de um tanque contendo óleo de densidade d = 800 kg/m³, sabendo que a altura da coluna de óleo é de 2,5 m e g = 10 m/s².",
+["3.200 Pa","8.000 Pa","20.000 Pa","200.000 Pa","2.500 Pa"],2,
+["Não vem de P = d·g·h = 800·10·2,5.","É d·g (800·10): faltou multiplicar pela altura.","P = 800·10·2,5 = 20.000 Pa.","Fator 10 a mais no cálculo.","É só o valor da altura: faltou multiplicar por d·g."]],
+["TB4","Dois blocos de volumes totais iguais a 1000 cm³, X e Y, são colocados em um recipiente com água (d = 1000 kg/m³, g = 10 m/s²). O bloco X flutua deslocando 800 cm³ de água, enquanto o bloco Y flutua deslocando 300 cm³. Assinale a afirmação verdadeira:",
+["O empuxo atuando sobre o bloco X é menor do que o empuxo atuando sobre o bloco Y.","O empuxo atuando sobre o bloco X é maior do que o empuxo atuando sobre o bloco Y.","O bloco Y possui densidade superior à densidade do bloco X.","O bloco Y está afundado e apoiado no fundo do recipiente.","O peso do bloco X é menor que a força de empuxo que ele recebe ao flutuar."],1,
+["E = d·V·g: X desloca mais água, então E_X > E_Y.","E_X = 1000·0,0008·10 = 8 N e E_Y = 3 N.","Y desloca menos água, logo submerge menos: é menos denso que X.","O enunciado diz que Y flutua, então não está apoiado no fundo.","Flutuando em equilíbrio, peso = empuxo."]],
+["TB3","Um automóvel realiza um movimento retilíneo uniforme (MRU). Em um gráfico de posição por tempo, constata-se que ele passa pela posição x₁ = 20 m no instante t₁ = 4 s e pela posição x₂ = 44 m no instante t₂ = 8 s. Qual é a velocidade do móvel nesse trecho?",
+["4 m/s","6 m/s","11 m/s","12 m/s","24 m/s"],1,
+["v = Δx/Δt = 24/4 = 6 m/s. O 4 é apenas o intervalo de tempo.","v = (44 − 20)/(8 − 4) = 6 m/s.","É x₂/Δt (44/4): a velocidade usa a variação Δx, não a posição final.","Dividiu Δx = 24 m por 2 s, mas o intervalo é de 4 s.","24 m é o deslocamento Δx: faltou dividir pelo tempo."]],
+["TB2","O Teorema de Stevin descreve o comportamento da pressão no interior de um líquido incompressível em equilíbrio estático. Assinale a alternativa correta:",
+["A pressão hidrostática exercida por uma coluna de líquido depende do formato geométrico do recipiente.","Todos os pontos situados à mesma profundidade em um mesmo líquido homogêneo em equilíbrio estão submetidos à mesma pressão.","A diferença de pressão entre dois pontos no interior de um líquido é inversamente proporcional à distância vertical entre eles.","A pressão diminui progressivamente à medida que aumentamos a profundidade no fluido.","A densidade do líquido não altera a pressão hidrostática gerada no fundo do vaso."],1,
+["Depende só de d, g e h, não do formato do recipiente.","É a ideia central do teorema de Stevin.","ΔP = d·g·Δh: a diferença é diretamente proporcional à distância vertical.","A pressão aumenta com a profundidade.","A densidade entra em P = d·g·h: mudar d muda a pressão."]],
+["TB4","Um robô de inspeção opera em um tanque contendo água (d = 1000 kg/m³, g = 10 m/s²). Sua escotilha tem área de 0,02 m² e sua trava suporta uma força máxima total de 3000 N antes de romper. Com P_atm = 100.000 Pa, qual é a profundidade máxima (h) em que o robô opera com segurança?",
+["2,5 m","5 m","10 m","15 m","20 m"],1,
+["Daria força de 2.500 N: é seguro, mas não é a profundidade máxima.","P máx = 3000/0,02 = 150.000 Pa; 150.000 = 100.000 + 1000·10·h → h = 5 m.","P = 200.000 Pa → F = 4.000 N, acima de 3.000 N: a trava rompe.","P = 250.000 Pa → F = 5.000 N: a trava rompe.","P = 300.000 Pa → F = 6.000 N: a trava rompe."]],
+["TB4","Um reservatório é composto por dois líquidos imiscíveis em equilíbrio: uma camada inferior de mercúrio (d₁ = 13.600 kg/m³) com 0,5 m e uma camada superior de um fluido X com 1,5 m. Com g = 10 m/s² e P_atm = 100.000 Pa, sabendo que a pressão total no fundo é 218.000 Pa, qual é a densidade do fluido X?",
+["1.000 kg/m³","2.500 kg/m³","3.333,33 kg/m³","5.000 kg/m³","13.600 kg/m³"],2,
+["Com 1.000 kg/m³ a pressão no fundo seria 183.000 Pa.","Com 2.500 kg/m³ seria 205.500 Pa.","218.000 − 100.000 − 68.000 (mercúrio) = 50.000 = d·10·1,5 → d ≈ 3.333,33 kg/m³.","Com 5.000 kg/m³ seria 243.000 Pa.","Com 13.600 kg/m³ seria 372.000 Pa."]],
+["TB2","Na cinemática escalar, os movimentos retilíneos são classificados de acordo com o sinal da velocidade e o comportamento do seu módulo. Selecione a afirmação correta:",
+["Quando a velocidade escalar é negativa (v < 0) e seu módulo aumenta com o tempo, o movimento é retrógrado e retardado.","Quando a velocidade escalar é positiva (v > 0) e seu módulo aumenta com o tempo, o movimento é progressivo e acelerado.","Quando a velocidade permanece constante e diferente de zero, a aceleração escalar é diferente de zero.","Todo movimento retrógrado possui obrigatoriamente aceleração positiva.","Movimento acelerado exige que a velocidade seja sempre positiva."],1,
+["Com v < 0 e módulo crescente o movimento é retrógrado e acelerado, não retardado.","v > 0 indica progressivo; módulo crescente indica acelerado.","Velocidade constante significa aceleração nula.","Retrógrado indica só v < 0; a aceleração pode ter qualquer sinal.","Acelerado significa módulo crescente; a velocidade pode ser negativa."]],
+["TB1","É comum expressar a densidade em g/cm³ ou em kg/m³. Qual operação transforma corretamente uma densidade de g/cm³ para a unidade do SI (kg/m³)?",
+["Dividir o valor numérico por 1000.","Multiplicar o valor numérico por 1000.","Manter o valor numérico exatamente igual.","Multiplicar o valor numérico por 100.","Dividir o valor numérico por 10."],1,
+["Isso converte no sentido contrário (kg/m³ para g/cm³).","1 g/cm³ = 1000 kg/m³ (a água: 1 g/cm³ = 1000 kg/m³).","Os valores diferem: a água é 1 em g/cm³ e 1000 em kg/m³.","O fator é 1000 (10⁻³ kg ÷ 10⁻⁶ m³), não 100.","Fator incorreto: o correto é multiplicar por 1000."]],
+["TB2","De acordo com P_hid = d · g · h, assinale a alteração que NÃO provoca variação no valor da pressão hidrostática exercida em um ponto submerso:",
+["Aumentar a profundidade h em que o ponto se encontra no fluido.","Substituir o líquido por outro de maior densidade d.","Transportar o sistema para um local com aceleração da gravidade g diferente.","Alterar o formato geométrico do recipiente mantendo a mesma profundidade h.","Diminuir a profundidade h do ponto submerso."],3,
+["Maior h, maior pressão: a pressão muda.","Maior d, maior pressão: a pressão muda.","g aparece na fórmula: mudar g muda a pressão.","A pressão depende só de d, g e h; o formato do recipiente não entra.","Menor h, menor pressão: a pressão muda."]],
+["TB3","Um mergulhador desloca-se verticalmente da profundidade de 5 m para a de 12 m em uma piscina (d = 1000 kg/m³, g = 10 m/s²). Qual foi o aumento de pressão hidrostática sentido ao final da manobra?",
+["50.000 Pa","70.000 Pa","120.000 Pa","170.000 Pa","20.000 Pa"],1,
+["É a pressão a 5 m; o aumento é a diferença entre as duas.","ΔP = 1000·10·(12 − 5) = 70.000 Pa.","É a pressão a 12 m; falta subtrair a de 5 m.","É a soma das duas pressões; o aumento é a diferença.","Corresponde a 2 m; a variação de profundidade é de 7 m."]],
+["TB3","Para um móvel em MRUV que parte do repouso na origem em t = 0 s, a equação horária da posição é x(t) = (a · t²)/2. Se em t = 2 s o móvel atinge x = 6 m, qual é o valor da aceleração a?",
+["1,5 m/s²","3 m/s²","6 m/s²","12 m/s²","2 m/s²"],1,
+["Com a = 1,5, x(2) = 3 m, não 6 m.","6 = a·4/2 → a = 3 m/s².","Com a = 6, x(2) = 12 m.","Com a = 12, x(2) = 24 m.","Com a = 2, x(2) = 4 m."]],
+["TB4","Considere um corpo de densidade d_corpo e volume V totalmente submerso em um líquido de densidade d_líquido. Com base na relação entre peso e empuxo, assinale a opção correta:",
+["Se d_corpo > d_líquido, a força de empuxo é maior que o peso e o corpo flutua em equilíbrio.","Se d_corpo < d_líquido, a força de empuxo com o corpo imerso é maior que seu peso, fazendo-o subir até flutuar em equilíbrio parcial.","Um corpo que flutua em equilíbrio na superfície recebe uma força de empuxo estritamente maior que seu peso.","Se d_corpo = d_líquido, o corpo necessariamente afunda até tocar o fundo do recipiente.","O empuxo independe da densidade do líquido em que o corpo está imerso."],1,
+["Se d_corpo > d_líquido, o peso supera o empuxo e o corpo afunda.","Com E > P ele sobe até que a parte submersa equilibre peso e empuxo.","Em equilíbrio na superfície, empuxo = peso (não é estritamente maior).","Com densidades iguais, E = P: o corpo fica em equilíbrio no interior do líquido.","E = d_líquido·V·g depende da densidade do líquido."]],
+["TB1","A densidade relaciona a massa de um corpo ao volume por ele ocupado. Assinale a definição matemática correta:",
+["d = m · V","d = m / V","d = V / m","d = m + V","d = m − V"],1,
+["O produto não expressa massa por unidade de volume.","Densidade é massa dividida por volume.","Está invertida: seria o volume por unidade de massa.","Não se somam grandezas de naturezas diferentes (kg e m³).","Não se subtraem grandezas de naturezas diferentes."]],
+["TB1","No Sistema Internacional de Unidades (SI), qual é a unidade oficial para a medida de densidade?",
+["Quilograma (kg)","Metro cúbico (m³)","Grama por centímetro cúbico (g/cm³)","Quilograma por metro cúbico (kg/m³)","Newton (N)"],3,
+["É unidade de massa, não de densidade.","É unidade de volume.","É muito usada, mas não pertence ao SI.","Massa em kg dividida por volume em m³.","É unidade de força."]],
+["TB2","Em um gráfico de posição em função do tempo (x × t), observa-se um trecho retilíneo inclinado para cima entre t = 4 s e t = 6 s. Como se classifica o movimento nesse trecho?",
+["Movimento progressivo e uniforme (MRU)","Movimento retrógrado e uniforme","Movimento progressivo e acelerado","Movimento retrógrado e retardado","O móvel encontra-se em repouso"],0,
+["Reta inclinada para cima: velocidade constante e positiva.","Retrógrado seria uma reta inclinada para baixo.","Movimento acelerado aparece como curva em x × t, não como reta.","Retrógrado e retardado seria uma curva; aqui o trecho é reto.","Repouso seria uma reta horizontal."]],
+["TB3","Dois blocos de mesmo volume (500 cm³), A e B, são colocados em água (d = 1000 kg/m³, g = 10 m/s²). O bloco A fica totalmente submerso, deslocando 500 cm³ de água. Qual é a força de empuxo atuando sobre A?",
+["3 N","5 N","8 N","50 N","500 N"],1,
+["Corresponderia a 300 cm³ deslocados.","E = 1000·0,0005·10 = 5 N.","Corresponderia a 800 cm³ deslocados.","Erro de conversão: 500 cm³ = 0,0005 m³, não 0,005 m³.","Usou o volume em cm³ sem converter para m³."]],
+["TB3","Um tanque de óleo tem líquido com densidade d = 800 kg/m³. Sabendo que g = 10 m/s² e P_atm = 100.000 Pa, qual é a pressão total (absoluta) no fundo quando a coluna de óleo atinge 2 m?",
+["16.000 Pa","84.000 Pa","116.000 Pa","160.000 Pa","200.000 Pa"],2,
+["É só a pressão hidrostática (800·10·2); falta somar P_atm.","A pressão atmosférica soma, não subtrai.","P = 100.000 + 800·10·2 = 116.000 Pa.","Fator 10 a mais na pressão hidrostática.","Não há como a altura multiplicar a P_atm; some P_atm à pressão do óleo."]],
+["TB3","Em um laboratório com água limpa (d = 1000 kg/m³, g = 10 m/s²), qual é a pressão hidrostática (devida exclusivamente ao líquido) em um ponto a 3 m de profundidade?",
+["3.000 Pa","30.000 Pa","130.000 Pa","300.000 Pa","100.000 Pa"],1,
+["Faltou multiplicar por d·g: é só a profundidade (3 m) vezes 1000.","P = 1000·10·3 = 30.000 Pa.","Inclui P_atm, mas a pergunta pede só a pressão do líquido.","Fator 10 a mais no cálculo.","É a pressão atmosférica, não a hidrostática."]],
+["TB1","O Princípio de Pascal diz que a variação de pressão aplicada a um fluido incompressível em equilíbrio transmite-se integralmente a todos os seus pontos. Qual equipamento se fundamenta nesse princípio?",
+["Velocímetro automotivo","Prensa hidráulica e freio hidráulico","Termômetro clínico","Dinamômetro de mola","Barômetro de mercúrio"],1,
+["Mede velocidade e não envolve fluido em equilíbrio transmitindo pressão.","Pressão transmitida integralmente: pequena força num êmbolo pequeno gera grande força em outro maior.","Baseia-se na dilatação térmica do mercúrio.","Baseia-se na deformação elástica da mola (lei de Hooke).","Baseia-se no equilíbrio da coluna de líquido (Stevin/Torricelli), não em Pascal."]],
+["TB2","Em um gráfico de velocidade em função do tempo (v × t) de um móvel em MRUV, o que a inclinação da reta representa fisicamente?",
+["A posição inicial do móvel","O deslocamento total percorrido","A aceleração escalar do móvel","A força exercida sobre o móvel","A densidade do meio"],2,
+["A posição não aparece em v × t; o ponto em t = 0 dá a velocidade inicial.","O deslocamento é a área sob a reta, não a inclinação.","a = Δv/Δt é a inclinação do gráfico v × t.","Calcular a força exigiria também a massa (F = m·a).","Densidade não tem relação com esse gráfico."]],
+["TB2","Em um gráfico de posição por tempo (x × t), a tangente da inclinação da reta em cada ponto representa numericamente qual grandeza da cinemática?",
+["A aceleração escalar","A velocidade escalar instantânea","A força de atrito","O empuxo","A pressão hidrostática"],1,
+["A aceleração é a inclinação do gráfico v × t.","v = Δx/Δt: a inclinação em x × t é a velocidade.","Atrito é uma força e não é obtida da inclinação de x × t.","Empuxo é força exercida por fluidos, outro assunto.","Pressão hidrostática depende de d, g e h, não do gráfico."]],
+["TB3","Um bloco maciço de alumínio com volume de 0,001 m³ é colocado totalmente submerso em água (d = 1000 kg/m³, g = 10 m/s²). Qual é a força de empuxo exercida pela água sobre o bloco?",
+["10 N","27 N","17 N","270 N","100 N"],0,
+["E = 1000·0,001·10 = 10 N; o material do bloco não entra na conta.","27 N é o peso do bloco (2700·0,001·10), não o empuxo.","17 N é peso − empuxo (27 − 10), o peso aparente.","Fator 10 a mais no peso, e peso não é empuxo.","Fator 10 a mais: 0,001 m³ resulta em 10 N."]],
+["TB3","Um recipiente cilíndrico contém mercúrio (d = 13.600 kg/m³) até uma altura de 0,5 m. Com g = 10 m/s², qual é a pressão hidrostática exercida exclusivamente pela coluna de mercúrio no fundo?",
+["6.800 Pa","68.000 Pa","136.000 Pa","168.000 Pa","680.000 Pa"],1,
+["Fator 10 a menos no cálculo.","P = 13.600·10·0,5 = 68.000 Pa.","Corresponde a h = 1 m, o dobro da altura dada.","Inclui P_atm (100.000 Pa), mas a pergunta pede só a coluna.","Fator 10 a mais no cálculo."]]
+];
+const L="abcde";let ans,hits;
+const qs=document.getElementById("qs"),prog=document.getElementById("prog"),score=document.getElementById("score"),fim=document.getElementById("fim");
+function upd(){const n=ans.filter(x=>x!==null).length;prog.textContent="Respondidas: "+n+" de "+Q.length;score.innerHTML="Acertos: <b>"+hits+"</b>";
+ if(n===Q.length){fim.style.display="block";document.getElementById("res").textContent=hits+" / "+Q.length;document.getElementById("msg").textContent=hits===Q.length?"Você acertou tudo.":"Releia as explicações das questões erradas e tente de novo.";}else fim.style.display="none";}
+function build(){
+ ans=Q.map(()=>null);hits=0;qs.innerHTML="";
+ Q.forEach((it,n)=>{
+  const c=document.createElement("div");c.className="card";
+  const t=document.createElement("div");t.className="tag";t.textContent=it[0];c.appendChild(t);
+  const p=document.createElement("p");p.className="q";const s=document.createElement("span");s.textContent=(n+1)+".";p.appendChild(s);p.appendChild(document.createTextNode(" "+it[1]));c.appendChild(p);
+  it[2].forEach((o,k)=>{
+   const b=document.createElement("button");b.type="button";b.className="opt";
+   b.innerHTML='<span class="dot"></span><span class="txt"></span>';
+   b.querySelector(".txt").textContent=L[k]+") "+o;
+   b.onclick=()=>pick(n,k,c);c.appendChild(b);
+  });
+  qs.appendChild(c);
+ });
+ upd();window.scrollTo(0,0);
+}
+function pick(n,k,c){
+ if(ans[n]!==null)return;
+ ans[n]=k;const it=Q[n];if(k===it[3])hits++;
+ c.querySelectorAll(".opt").forEach((b,j)=>{
+  b.disabled=true;b.classList.add(j===it[3]?"ok":"bad");if(j===k)b.classList.add("sel");
+  const w=document.createElement("span");w.className="why";w.textContent=(j===it[3]?"Certa. ":"Errada. ")+it[4][j];
+  b.querySelector(".txt").appendChild(w);
+ });
+ upd();
+}
+document.getElementById("reset").onclick=build;
+build();
+</script>
+</body>
+</html>
